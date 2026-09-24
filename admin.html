@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin — Mi Blog</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body class="admin-body">
+
+  <div class="admin-topbar">
+    <div class="admin-topbar-inner">
+      <span class="title">📝 Panel de administración</span>
+      <div style="display:flex;align-items:center;gap:16px">
+        <span class="user-info" id="userInfo"></span>
+        <button class="btn btn-secondary btn-sm" id="btnLogout">Cerrar sesión</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="admin-wrap">
+
+    <!-- ===================== LOGIN ===================== -->
+    <section id="view-login">
+      <div class="login-card">
+        <h1>Acceso al panel</h1>
+        <p class="sub">Usá tu token de GitHub para administrar el blog.</p>
+        <form id="loginForm">
+          <div class="field">
+            <label>Usuario de GitHub</label>
+            <input type="text" id="loginOwner" placeholder="tu-usuario" autocomplete="username">
+          </div>
+          <div class="field">
+            <label>Nombre del repo</label>
+            <input type="text" id="loginRepo" placeholder="mi-blog" autocomplete="off">
+          </div>
+          <div class="field">
+            <label>Token de acceso (PAT)</label>
+            <input type="password" id="loginToken" placeholder="ghp_..." autocomplete="current-password">
+            <div class="hint">Token con permiso <b>Contents: read &amp; write</b>. Se guarda solo en este navegador.</div>
+          </div>
+          <p id="loginError" style="color:var(--danger);font-size:13px;min-height:18px"></p>
+          <button type="submit" class="btn btn-block" id="loginBtn">Entrar</button>
+        </form>
+        <p class="hint" style="margin-top:18px;text-align:center">
+          ¿No tenés token? GitHub → Settings → Developer settings → Personal access tokens → Generate (scope: <b>repo</b>).
+        </p>
+      </div>
+    </section>
+
+    <!-- ===================== DASHBOARD ===================== -->
+    <section id="view-dashboard" style="display:none">
+      <div class="dash-head">
+        <h2>Posts</h2>
+        <button class="btn" id="btnNew">+ Nuevo post</button>
+      </div>
+      <div class="post-table" id="postList"></div>
+    </section>
+
+    <!-- ===================== EDITOR ===================== -->
+    <section id="view-editor" style="display:none">
+      <div class="editor-head">
+        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px">
+          <h2 id="editorTitle">Nuevo post</h2>
+          <button class="btn btn-ghost btn-sm" id="btnBack">← Volver</button>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr;gap:16px;margin-bottom:20px">
+        <div class="field">
+          <label>Título</label>
+          <input type="text" id="edTitle" placeholder="Título del post" style="font-size:18px;padding:13px 14px">
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+          <div class="field">
+            <label>Slug (URL)</label>
+            <input type="text" id="edSlug" placeholder="mi-post">
+          </div>
+          <div class="field">
+            <label>Etiquetas (separadas por comas)</label>
+            <input type="text" id="edTags" placeholder="tecnología, vida, ideas">
+          </div>
+        </div>
+        <div class="field">
+          <label>Imagen de portada</label>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+            <input type="text" id="edCover" placeholder="https://... o subí una imagen" style="flex:1;min-width:200px">
+            <button class="btn btn-secondary btn-sm" id="btnUploadCover" type="button">Subir portada</button>
+            <input type="file" id="coverFile" accept="image/*" style="display:none">
+          </div>
+          <img id="edCoverPreview" class="cover-preview" style="display:none" alt="">
+        </div>
+      </div>
+
+      <div class="editor-grid">
+        <div>
+          <div class="editor-toolbar">
+            <button class="tool-btn" data-md="bold" title="Negrita"><b>B</b></button>
+            <button class="tool-btn" data-md="italic" title="Cursiva"><i>I</i></button>
+            <span class="tool-sep"></span>
+            <button class="tool-btn" data-md="h1" title="Título 1">H1</button>
+            <button class="tool-btn" data-md="h2" title="Título 2">H2</button>
+            <span class="tool-sep"></span>
+            <button class="tool-btn" data-md="link" title="Enlace">🔗</button>
+            <button class="tool-btn" data-md="image" title="Imagen">🖼️</button>
+            <button class="tool-btn" data-md="video" title="Video YouTube">▶</button>
+            <span class="tool-sep"></span>
+            <button class="tool-btn" data-md="code" title="Código">&lt;/&gt;</button>
+            <button class="tool-btn" data-md="list" title="Lista">•</button>
+            <button class="tool-btn" data-md="quote" title="Cita">❝</button>
+          </div>
+          <textarea class="editor-area" id="edContent" placeholder="Escribí tu post en Markdown…"></textarea>
+          <div style="display:flex;gap:8px;align-items:center;margin-top:8px">
+            <button class="btn btn-secondary btn-sm" id="btnUploadImage" type="button">📷 Insertar imagen</button>
+            <input type="file" id="contentFile" accept="image/*" style="display:none">
+            <span class="muted" style="font-size:12px">Sube una imagen y se inserta en el cursor.</span>
+          </div>
+        </div>
+        <div>
+          <div class="preview-pane" id="previewPane">
+            <div class="preview-empty">El preview aparecerá acá</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="editor-footer">
+        <label style="display:flex;align-items:center;gap:8px;font-size:14px;color:var(--text-soft)">
+          <input type="checkbox" id="edPublished" checked> Publicado (visible en el blog)
+        </label>
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <button class="btn btn-danger" id="btnDelete" style="display:none">Borrar</button>
+          <button class="btn btn-secondary" id="btnDraft" type="button">Guardar borrador</button>
+          <button class="btn" id="btnSave" type="button">Publicar</button>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <script src="assets/js/config.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/marked@12/marked.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/dompurify@3/dist/purify.min.js"></script>
+  <script src="assets/js/api.js"></script>
+  <script src="assets/js/blog.js"></script>
+  <script src="assets/js/admin.js"></script>
+</body>
+</html>

@@ -1,0 +1,6 @@
+# Artefactos del agente / temporales
+.codebuddy/
+*.log
+.DS_Store
+__pycache__/
+node_modules/

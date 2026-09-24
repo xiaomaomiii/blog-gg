@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Post — Mi Blog</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <nav class="nav">
+      <a href="index.html" class="nav-brand" data-brand>Mi Blog</a>
+      <div class="nav-links">
+        <a href="index.html">Inicio</a>
+        <a href="admin.html" class="btn-admin">Admin</a>
+      </div>
+    </nav>
+  </header>
+
+  <main id="postRoot"></main>
+
+  <footer class="site-footer">
+    <p>&copy; <span data-year></span> <span data-brand>Mi Blog</span>.</p>
+  </footer>
+
+  <script src="assets/js/config.js"></script>
+  <script>
+    document.querySelectorAll('[data-brand]').forEach(el => el.textContent = BLOG_CONFIG.blog.title);
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/marked@12/marked.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/dompurify@3/dist/purify.min.js"></script>
+  <script src="assets/js/api.js"></script>
+  <script src="assets/js/blog.js"></script>
+</body>
+</html>

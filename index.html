@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mi Blog</title>
+  <meta name="description" content="Pensamientos, historias e ideas.">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <nav class="nav">
+      <a href="index.html" class="nav-brand" data-brand>Mi Blog</a>
+      <div class="nav-links">
+        <a href="index.html">Inicio</a>
+        <a href="admin.html" class="btn-admin">Admin</a>
+      </div>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <h1 data-hero-title>Mi Blog</h1>
+    <p data-hero-desc>Pensamientos, historias e ideas.</p>
+  </section>
+
+  <div class="toolbar">
+    <div class="search-box">
+      <input type="text" id="searchInput" placeholder="Buscar posts…">
+    </div>
+    <div class="tag-filters" id="tagFilters"></div>
+  </div>
+
+  <main class="container">
+    <div class="post-grid" id="postGrid"></div>
+  </main>
+
+  <footer class="site-footer">
+    <p>&copy; <span data-year></span> <span data-brand>Mi Blog</span>. Hecho con ❤️ y GitHub.</p>
+  </footer>
+
+  <script src="assets/js/config.js"></script>
+  <script>
+    // rellenar textos dinámicos antes de cargar el resto
+    document.querySelectorAll('[data-brand]').forEach(el => el.textContent = BLOG_CONFIG.blog.title);
+    document.querySelector('[data-hero-title]').textContent = BLOG_CONFIG.blog.title;
+    document.querySelector('[data-hero-desc]').textContent = BLOG_CONFIG.blog.description;
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/marked@12/marked.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/dompurify@3/dist/purify.min.js"></script>
+  <script src="assets/js/api.js"></script>
+  <script src="assets/js/blog.js"></script>
+</body>
+</html>
